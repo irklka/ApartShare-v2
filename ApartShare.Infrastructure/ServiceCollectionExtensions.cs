@@ -1,4 +1,6 @@
-﻿using ApartShare.Infrastructure.Persistence;
+﻿using ApartShare.Application.Interfaces;
+using ApartShare.Infrastructure.Persistence;
+using ApartShare.Infrastructure.Respository;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +15,8 @@ public static class ServiceCollectionExtensions
     {
         services.AddDbContext<ApplicationDbContext>(
             options => options.UseSqlServer(configuration.GetConnectionString("Default")));
+
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }

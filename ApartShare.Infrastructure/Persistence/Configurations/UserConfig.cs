@@ -19,17 +19,16 @@ public class UserConfig : IEntityTypeConfiguration<User>
         builder.HasIndex(t => t.Email)
             .IsUnique();
 
-        builder.Property(t => t.UserName)
+        builder.Property(t => t.Username)
             .HasMaxLength(50)
             .IsRequired();
 
         builder.Property(t => t.Password)
-            .HasMaxLength(50)
+            .HasMaxLength(250)
             .IsRequired();
 
         builder.Property(t => t.ImageBase64ByteArray)
-            .HasColumnName("Blob")
-            .IsRequired();
+            .HasColumnName("Blob");
 
         builder.HasOne(t => t.Apartment)
             .WithOne(a => a.Owner)

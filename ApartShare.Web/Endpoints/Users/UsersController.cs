@@ -1,7 +1,9 @@
-﻿using MediatR;
+﻿using ApartShare.Web.Endpoints.Users.Login;
+using ApartShare.Web.Endpoints.Users.Register;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
-using Web.Endpoints.Users.Register;
 
 namespace Web.Endpoints.Users;
 
@@ -13,8 +15,16 @@ public class UserController : BaseApiController
     [HttpPost("Register")]
     public async Task<IActionResult> Register(RegisterRequest request, CancellationToken cancellation)
     {
-        var response = await _mediator.Send(request, cancellation);
+        await _mediator.Send(request, cancellation);
 
-        return Ok(response);
+        return NoContent();
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginRequest request, CancellationToken cancellation)
+    {
+        var result = await _mediator.Send(request, cancellation);
+
+        return Ok(result);
     }
 }

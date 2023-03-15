@@ -17,6 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\ApartShare.Application\ApartShare.Application.csproj" />
 	  <ProjectReference Include="..\ApartShare.Core\ApartShare.Core.csproj" />
 	</ItemGroup>
 

@@ -9,24 +9,29 @@ namespace ApartShare.Application.Services;
 
 public class Base64Service : IBase64Service
 {
-    private readonly Base64 _options;
+    private readonly Base64Options _options;
 
-    public Base64Service(IOptions<Base64> options)
+    public Base64Service(IOptionsSnapshot<Base64Options> options)
     {
         _options = options.Value;
     }
 
     public byte[] FromBase64(string? base64String)
     {
+        if (string.IsNullOrWhiteSpace(base64String))
+        {
+            return default!;
+        }
+
         string base64WithoutPrefix;
 
         try
         {
-            base64WithoutPrefix = base64String.Split(",")[1];
+            base64WithoutPrefix = base64String!.Split(",")[1];
         }
         catch
         {
-            throw new ArgumentNullException($"{base64String} can not be a null.");
+            return default!;
         }
 
         var result = Convert.FromBase64String(base64WithoutPrefix);
@@ -41,7 +46,7 @@ public class Base64Service : IBase64Service
 
         if (bytes is null)
         {
-            throw new ArgumentNullException($"{bytes} can not be a null.");
+            return string.Empty;
         }
 
         var base64String = Convert.ToBase64String(bytes);

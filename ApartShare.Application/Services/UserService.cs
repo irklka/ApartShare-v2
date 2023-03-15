@@ -1,32 +1,64 @@
 ﻿using ApartShare.Core.Entities;
-using ApartShare.Infrastructure.Persistence;
 
-using ApartShare.Application.Interfaces;
 using ApartShare.Application.Models.Users;
+using ApartShare.Application.Interfaces;
 
 namespace ApartShare.Application.Services;
 
 public class UserService : IUserService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IUserRepository _userRepository;
 
-    public UserService(ApplicationDbContext dbContext)
+    public UserService(IUserRepository userRepository)
     {
-        _context = dbContext;
+        _userRepository = userRepository;
     }
 
-    public async Task RegisterUser(UserDto userDto, CancellationToken cancellationToken)
+    public async Task RegisterUser(UserResiterDto user,
+        CancellationToken cancellationToken)
     {
         var newUser = new User
         {
-            Name = userDto.Fullname,
-            Email = userDto.Email,
-            UserName = userDto.UserName,
-            Password = userDto.Password,
-            ImageBase64ByteArray = userDto.Image
+            Id = Guid.NewGuid(),
+            Name = user.Fullname,
+            Email = user.Email,
+            Username = user.UserName,
+            Password = user.Password,
+            ImageBase64ByteArray = user.Image
         };
 
-        await _context.AddAsync(newUser, cancellationToken);
-        await _context.SaveChangesAsync(cancellationToken);
+        await _userRepository.AddAsync(newUser, cancellationToken);
+    }
+
+    public async Task<Guid> ValidateUser(string username,
+        string password, 
+        CancellationToken cancellationToken)
+    {
+        var user = await _userRepository.GetUserByUsernamePassword(username, password, cancellationToken);
+
+        if(user is null)
+        {
+            return Guid.Empty;
+        }
+
+        return user.Id;
+    }
+
+    public async Task<UserDto> GetUserById(Guid id, 
+        CancellationToken cancellationToken)
+    {
+        var user = await _userRepository.GetById(id, cancellationToken);
+
+        var userDto = new UserDto
+        {
+            UserId = user.Id,
+            Fullname = user.Name,
+            Email = user.Email,
+            UserName = user.Username,
+            Image = user.ImageBase64ByteArray,
+            ApartmentId = user.ApartmentId,
+        };
+
+        return userDto;
     }
 }

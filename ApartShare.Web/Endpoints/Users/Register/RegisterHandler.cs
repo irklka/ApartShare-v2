@@ -3,48 +3,42 @@ using ApartShare.Application.Models.Users;
 
 using MediatR;
 
-namespace Web.Endpoints.Users.Register;
+namespace ApartShare.Web.Endpoints.Users.Register;
 
-public record RegisterRequest(string Email, string Password, string Login, string Fullname, string? ImageBase64)
-    : IRequest<RegisterResponse>;
+public record RegisterRequest(string Email, string Password, string RepeatPassword, string Login, string Fullname, string? ImageBase64)
+    : IRequest;
 
-public record RegisterResponse
-{
-    public int Id { get; init; }
-    public string Email { get; init; }
-    public string Login { get; init; }
-    public string Fullname { get; init; }
-    public string? ImageBase64 { get; init; }
-}
-
-public class RegisterHandler : IRequestHandler<RegisterRequest, RegisterResponse>
+public class RegisterHandler : IRequestHandler<RegisterRequest>
 {
     private readonly IUserService _userService;
     private readonly IBase64Service _base64Service;
+    private readonly IHashService _hashService;
 
-    public RegisterHandler(IUserService userService, IBase64Service base64Service)
+    public RegisterHandler(IUserService userService, 
+        IBase64Service base64Service,
+        IHashService hashService)
     {
         _userService = userService;
         _base64Service = base64Service;
+        _hashService = hashService;
     }
 
-    public async Task<RegisterResponse> Handle(RegisterRequest request, CancellationToken cancellationToken)
+    public async Task Handle(RegisterRequest request, CancellationToken cancellationToken)
     {
         var imageString = request.ImageBase64;
         var image = _base64Service.FromBase64(imageString);
+        var password = _hashService.GetHash(request.Password);
 
-        var newUser = new UserDto
+        var newUser = new UserResiterDto
         {
             Fullname = request.Fullname,
             Email = request.Email,
             UserName = request.Login,
-            Password = request.Password,
+            Password = password,
             Image = image ?? default
         };
 
         await _userService.RegisterUser(newUser, cancellationToken);
-
-        return new RegisterResponse();
     }
 
 }

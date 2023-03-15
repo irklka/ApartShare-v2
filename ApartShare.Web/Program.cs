@@ -3,12 +3,13 @@ using ApartShare.Infrastructure;
 using ApartShare.Web;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
-builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddInfrastructure(configuration);
 
-builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddApplication();
 
-builder.Services.AddWeb(builder.Configuration);
+builder.Services.AddWeb(configuration);
 
 builder.Services.AddControllers();
 
