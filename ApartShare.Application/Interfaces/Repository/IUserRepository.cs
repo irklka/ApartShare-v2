@@ -1,6 +1,6 @@
 ﻿using ApartShare.Core.Entities;
 
-namespace ApartShare.Application.Interfaces;
+namespace ApartShare.Application.Interfaces.Repository;
 
 public interface IUserRepository : IRepository<User>
 {

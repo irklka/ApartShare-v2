@@ -1,4 +1,4 @@
-﻿namespace ApartShare.Application.Interfaces;
+﻿namespace ApartShare.Application.Interfaces.Services;
 
 public interface IBase64Service
 {

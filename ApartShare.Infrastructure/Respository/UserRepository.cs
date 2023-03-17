@@ -1,6 +1,6 @@
 ﻿using ApartShare.Core.Entities;
-using ApartShare.Application.Interfaces;
 using ApartShare.Infrastructure.Persistence;
+using ApartShare.Application.Interfaces.Repository;
 
 using Microsoft.EntityFrameworkCore;
 

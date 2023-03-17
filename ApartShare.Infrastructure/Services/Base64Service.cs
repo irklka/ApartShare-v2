@@ -1,11 +1,11 @@
-﻿using ApartShare.Application.Interfaces;
+﻿using ApartShare.Application.Interfaces.Services;
 using ApartShare.Application.Models;
 
 using Microsoft.Extensions.Options;
 
 using System.Text;
 
-namespace ApartShare.Application.Services;
+namespace ApartShare.Infrastructure.Services;
 
 public class Base64Service : IBase64Service
 {

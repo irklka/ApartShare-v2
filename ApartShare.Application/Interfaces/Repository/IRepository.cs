@@ -1,6 +1,6 @@
-﻿namespace ApartShare.Application.Interfaces;
+﻿namespace ApartShare.Application.Interfaces.Repository;
 
-public interface IRepository<TEntity> 
+public interface IRepository<TEntity>
     where TEntity : class
 {
     IQueryable<TEntity> GetAll(CancellationToken cancellationToken);

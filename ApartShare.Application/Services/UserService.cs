@@ -1,7 +1,7 @@
 ﻿using ApartShare.Core.Entities;
-
 using ApartShare.Application.Models.Users;
 using ApartShare.Application.Interfaces;
+using ApartShare.Application.Interfaces.Repository;
 
 namespace ApartShare.Application.Services;
 

@@ -1,13 +1,13 @@
-﻿using ApartShare.Application.Interfaces;
+﻿using ApartShare.Application.Interfaces.Services;
 
 using System.Security.Cryptography;
 using System.Text;
 
-namespace ApartShare.Application.Services;
+namespace ApartShare.Infrastructure.Authentication;
 
-public class HashService : IHashService
+public class PasswordHasher : IHashService
 {
-    public string GetHash(string key)
+    public string Hash(string key)
     {
         using SHA256 sha256Hash = SHA256.Create();
 

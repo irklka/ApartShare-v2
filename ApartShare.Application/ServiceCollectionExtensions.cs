@@ -1,4 +1,5 @@
 ﻿using ApartShare.Application.Interfaces;
+using ApartShare.Application.Interfaces.Services;
 using ApartShare.Application.Services;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -10,8 +11,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IBase64Service, Base64Service>();
-        services.AddScoped<IHashService, HashService>();
 
         return services;
     }
