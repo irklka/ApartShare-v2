@@ -13,11 +13,13 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddWeb(this IServiceCollection services,
         IConfiguration configuration)
     {
+        var assembly = Assembly.GetExecutingAssembly();
+
         services.Configure<Base64Options>(configuration.GetSection(Base64Options.SECTION_NAME));
 
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
 
-        services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        services.AddValidatorsFromAssembly(assembly);
 
         services.AddEndpointsApiExplorer()
             .AddSwaggerGen(options =>

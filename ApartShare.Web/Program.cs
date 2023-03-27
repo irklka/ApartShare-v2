@@ -21,13 +21,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseExceptionHandler("/error");
+
+app.UseMiddleware<CustomExceptionMiddleware>();
+
 app.UseHttpsRedirection();
 
-app.UseAuthentication()
-    .UseRouting()
+app.UseRouting()
+    .UseAuthentication()
     .UseAuthorization();
 
-app.UseMiddleware<ValidationExceptionMiddleware>();
 
 app.MapControllers();
 

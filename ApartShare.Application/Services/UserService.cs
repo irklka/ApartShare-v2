@@ -3,40 +3,37 @@ using ApartShare.Application.Models.Users;
 using ApartShare.Application.Interfaces;
 using ApartShare.Application.Interfaces.Repository;
 
+using AutoMapper;
+
 namespace ApartShare.Application.Services;
 
 public class UserService : IUserService
 {
+    private readonly IMapper _mapper;
     private readonly IUserRepository _userRepository;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IMapper mapper,
+        IUserRepository userRepository)
     {
+        _mapper = mapper;
         _userRepository = userRepository;
     }
 
-    public async Task RegisterUser(UserResiterDto user,
+    public async Task RegisterUser(UserRegisterDto user,
         CancellationToken cancellationToken)
     {
-        var newUser = new User
-        {
-            Id = Guid.NewGuid(),
-            Name = user.Fullname,
-            Email = user.Email,
-            Username = user.UserName,
-            Password = user.Password,
-            ImageBase64ByteArray = user.Image
-        };
+        var newUser = _mapper.Map<User>(user);
 
         await _userRepository.AddAsync(newUser, cancellationToken);
     }
 
     public async Task<Guid> ValidateUser(string username,
-        string password, 
+        string password,
         CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetUserByUsernamePassword(username, password, cancellationToken);
 
-        if(user is null)
+        if (user is null)
         {
             return Guid.Empty;
         }
@@ -44,7 +41,7 @@ public class UserService : IUserService
         return user.Id;
     }
 
-    public async Task<UserDto> GetUserById(Guid id, 
+    public async Task<UserDto> GetUserById(Guid id,
         CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetById(id, cancellationToken);

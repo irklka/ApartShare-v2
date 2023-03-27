@@ -4,7 +4,7 @@ namespace ApartShare.Application.Interfaces;
 
 public interface IUserService
 {
-    Task RegisterUser(UserResiterDto user, CancellationToken cancellationToken);
+    Task RegisterUser(UserRegisterDto user, CancellationToken cancellationToken);
     
     Task<UserDto> GetUserById(Guid id, CancellationToken cancellationToken);
     

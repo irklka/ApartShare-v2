@@ -8,20 +8,27 @@ using MediatR;
 
 namespace ApartShare.Web.Endpoints.User.Register;
 
-public record RegisterRequest(string Email, string Password, string RepeatPassword, string Login, string Fullname, string? ImageBase64)
-    : IRequest;
+public record RegisterRequest(string Email,
+    string Password,
+    string RepeatPassword,
+    string Login,
+    string Fullname,
+    string? ImageBase64) : IRequest;
 
 public class RegisterRequestValidator : AbstractValidator<RegisterRequest>
 {
     public RegisterRequestValidator()
     {
-        RuleFor(x => x.Email).EmailAddress();
+        RuleFor(x => x.Email)
+            .EmailAddress();
 
         RuleFor(x => x.Password)
             .MinimumLength(6)
             .MaximumLength(50);
 
-        RuleFor(x => x.Password == x.RepeatPassword);
+        RuleFor(x => x.RepeatPassword)
+            .Equal(x => x.Password)
+            .WithMessage("Passwords do not match.");
 
         RuleFor(x => x.Login)
             .MinimumLength(3)
@@ -59,7 +66,7 @@ public class RegisterHandler : IRequestHandler<RegisterRequest>
         var image = _base64Service.FromBase64(imageString);
         var password = _hashService.Hash(request.Password);
 
-        var newUser = new UserResiterDto
+        var newUser = new UserRegisterDto
         {
             Fullname = request.Fullname,
             Email = request.Email,
@@ -70,5 +77,4 @@ public class RegisterHandler : IRequestHandler<RegisterRequest>
 
         await _userService.RegisterUser(newUser, cancellationToken);
     }
-
 }

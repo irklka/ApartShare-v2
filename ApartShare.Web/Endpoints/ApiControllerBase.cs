@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace Web.Endpoints;
 
 [ApiController]
-public class BaseApiController : ControllerBase
+public class ApiControllerBase : ControllerBase
 {
     protected readonly IMediator _mediator;
 
-    public BaseApiController(IMediator mediator)
+    public ApiControllerBase(IMediator mediator)
     {
         _mediator = mediator;
     }

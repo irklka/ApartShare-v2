@@ -1,8 +1,12 @@
-﻿namespace ApartShare.Application.Models.Users;
+﻿using ApartShare.Application.Mappings;
+using ApartShare.Core.Entities;
 
-public record UserResiterDto
+using AutoMapper;
+
+namespace ApartShare.Application.Models.Users;
+
+public record UserRegisterDto
 {
-    public Guid UserId { get; init; } = Guid.Empty;
     public string Fullname { get; init; }
     public string Email { get; init; }
     public string UserName { get; init; }

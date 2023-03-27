@@ -5,11 +5,11 @@ using System.Text.Json;
 
 namespace ApartShare.Web.Middleware;
 
-public class ValidationExceptionMiddleware
+public class CustomExceptionMiddleware
 {
     private readonly RequestDelegate _next;
 
-    public ValidationExceptionMiddleware(RequestDelegate next)
+    public CustomExceptionMiddleware(RequestDelegate next)
     {
         _next = next;
     }
@@ -36,6 +36,12 @@ public class ValidationExceptionMiddleware
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
             await context.Response.WriteAsync(json);
+        }
+        catch (Exception ex)
+        {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            await context.Response.WriteAsync(JsonSerializer.Serialize(new { ErrorMessage = ex.Message }));
         }
     }
 }
